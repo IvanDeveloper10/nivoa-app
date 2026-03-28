@@ -2,8 +2,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home.jsx'; 
 import Shop from './pages/Shop.jsx';
 import Cart from './pages/Cart.jsx';
-import Register from './pages/register.jsx';
-import Login from './pages/login.jsx';
+import Register from './pages/Register.jsx';
+import Login from './pages/Login.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import UserProfile from './pages/UserProfile.jsx';
 
