@@ -1,1 +1,9 @@
 @import 'tailwindcss';
+
+.text-fu {
+  font-family: 'Funnel Display', sans-serif;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
