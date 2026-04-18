@@ -32,8 +32,8 @@ export default function Products() {
         {products.map(product => (
           <div key={product.id} className='bg-zinc-100 w-72 h-96 p-5 rounded-xl shadow-lg'>
             <main className='flex justify-end items-center gap-2 mb-4'>
-              <i className='fi fi-rr-pencil flex justify-center items-center bg-blue-200 p-1 rounded-sm text-xl hover:cursor-pointer hover:scale-95 transition-all'></i>
-              <i className='fi fi-rr-trash flex justify-center items-center bg-rose-200 p-1 rounded-sm text-xl hover:cursor-pointer hover:scale-95 transition-all' onClick={() => handleDeleteProduct(product.id)}></i>
+              <i className='fi fi-rr-pencil flex justify-center items-center bg-blue-600 p-2 rounded-lg text-xl hover:cursor-pointer hover:scale-95 transition-all text-white'></i>
+              <i className='fi fi-rr-trash flex justify-center items-center bg-pink-600 p-2 rounded-lg text-xl hover:cursor-pointer hover:scale-95 transition-all  text-white' onClick={() => handleDeleteProduct(product.id)}></i>
             </main>
             {product.images && product.images.length > 0 && (
               <img 
@@ -51,7 +51,7 @@ export default function Products() {
               {product.title}
             </h2>
             <p>
-              {product.description}
+              {product.shortDescription}
             </p>
             <span>
               ${product.price}

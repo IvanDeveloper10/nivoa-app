@@ -31,7 +31,7 @@ export default function Navbar() {
     <Fragment>
       <header className='w-full sticky top-0 py-5 flex justify-around text-fu bg-zinc-900 text-white max-sm:hidden border-b-2 border-purple-600 z-50'>
         <div>
-          LOGO
+          <img src='/nivoa-logo.png' alt='Nivoa Logo' width={60} />
         </div>
         <nav className='flex gap-10'>
           <Link to={'/'} className='flex justify-center items-center gap-1'><i className='fi fi-rr-home flex justify-center items-center'></i>Home</Link>
@@ -58,7 +58,9 @@ export default function Navbar() {
             <Link to={'/profile'}>
               <i className='fi fi-rr-circle-user text-2xl flex justify-center items-center hover:cursor-pointer hover:scale-90 transition-all'></i>
             </Link>
-            <i className='fi fi-rr-shopping-bag text-2xl flex justify-center items-center hover:cursor-pointer hover:scale-90 transition-all'></i>
+            <Link to={'/cart'}>
+              <i className='fi fi-rr-shopping-bag text-2xl flex justify-center items-center hover:cursor-pointer hover:scale-90 transition-all'></i>
+            </Link>
           </span>
         )}
       </header>

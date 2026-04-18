@@ -35,7 +35,7 @@ export default function Home() {
           </div>
           <div className='flex justify-center lg:justify-end w-full lg:w-auto'>
             <div className='w-full lg:w-xl aspect-square'>
-              <img src='/image-nivoa.png' alt='Image Nivoa' className='w-full h-full object-cover rounded-b-xl lg:rounded-b-none lg:rounded-r-xl' />
+              <img src='/image-nivoa.png' alt='Image Nivoa' className='w-full h-full object-cover rounded-b-xl lg:rounded-bl-none lg:rounded-r-xl rounded-br-xl' />
             </div>
           </div>
         </main>
