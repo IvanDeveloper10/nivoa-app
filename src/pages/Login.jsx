@@ -35,7 +35,7 @@ export default function Login() {
         <div className='w-2/4 flex flex-col justify-center items-center gap-5 text-fu max-lg:w-full'>
           <h1 className='text-fu text-4xl font-bold text-center'>USER LOGIN</h1>
           <input type='text' placeholder='email' name='email' className='outline-none bg-zinc-100 w-96 py-2 px-5 rounded-xl' onChange={(e) => setEmail(e.target.value)} />
-          <input type={showPassword ? 'text': 'password'} placeholder='password' name='passwoord' className='outline-none bg-zinc-100 w-96 py-2 px-5 rounded-xl' onChange={(e) => setPassword(e.target.value)} />
+          <input type={showPassword ? 'text': 'password'} placeholder='password' name='password' className='outline-none bg-zinc-100 w-96 py-2 px-5 rounded-xl' onChange={(e) => setPassword(e.target.value)} />
           <label className='w-96'><input type='checkbox' onChange={() => setShowPassword(!showPassword)} /> Show password</label>
           <button className='bg-purple-600 py-2 text-fu text-white w-96 rounded-xl hover:cursor-pointer hover:scale-95 transition-all' onClick={handleButtonLogin}>submit</button>
           <span>Do you haven't an account? <Link to='/register' className='text-blue-600'>register</Link></span>

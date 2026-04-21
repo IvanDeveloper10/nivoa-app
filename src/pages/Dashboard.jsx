@@ -4,12 +4,17 @@ import Orders from '../components/Orders.jsx';
 import AddProducts from '../components/AddProducts.jsx';
 import Products from '../components/Products.jsx';
 import { auth } from '../utils/firebase.js';
+import { db } from '../utils/firebase.js';
 import { onAuthStateChanged } from 'firebase/auth';
+import { collection, onSnapshot} from 'firebase/firestore';
 
 
 export default function Dashboard() {
 
   const [view, setView] = useState('dashboard');
+  const [usersCount, setUsersCount] = useState(0);
+  const [productsCount, setProductsCount] = useState(0);
+  const [ordersCount, setOrdersCount] = useState(0);
 
   const navigate = useNavigate();
 
@@ -23,6 +28,34 @@ export default function Dashboard() {
     });
 
     return () => adminAuth();
+  }, []);
+
+  useEffect(() => {
+    const unsubProducts = onSnapshot(collection(db, 'products'), (snapshot) => {
+      setProductsCount(snapshot.size);
+    });
+
+    const unsubOrders = onSnapshot(collection(db, 'orders'), (snapshot) => {
+      setOrdersCount(snapshot.size);
+    });
+
+    const unsubUsers = onSnapshot(collection(db, 'user_orders'), (snapshot) => {
+      const uniqueUsers = new Set();
+
+      snapshot.docs.forEach(doc => {
+        const data = doc.data();
+        if (data.userId) {
+          uniqueUsers.add(data.userId);
+        }
+      });
+      setUsersCount(uniqueUsers.size);
+    });
+
+    return () => {
+      unsubProducts();
+      unsubOrders();
+      unsubUsers();
+    };
   }, []);
 
   const handleBackButton = () => {
@@ -54,19 +87,19 @@ export default function Dashboard() {
                 <main className='flex justify-center items-center gap-2'>
                   <i className='fi fi-rr-circle-user flex justify-center items-center text-2xl'></i> USERS
                 </main>
-                <h1 className='text-5xl'>10</h1>
+                <h1 className='text-5xl'>{usersCount}</h1>
               </div>
               <div className='bg-zinc-800 text-white p-5 w-56 h-56 flex flex-col gap-5 justify-center items-center rounded-3xl shadow-2xl hover:scale-95 hover:cursor-pointer transition-all'>
                 <main className='flex justify-center items-center gap-2'>
                   <i className='fi fi-rr-boxes flex justify-center items-center text-2xl'></i> PRODUCTS
                 </main>
-                <h1 className='text-5xl'>11</h1>
+                <h1 className='text-5xl'>{productsCount}</h1>
               </div>
               <div className='bg-zinc-800 text-white p-5 w-56 h-56 flex flex-col gap-5 justify-center items-center rounded-3xl shadow-2xl hover:scale-95 hover:cursor-pointer transition-all'>
                 <main className='flex justify-center items-center gap-2'>
                   <i className='fi fi-rr-truck-box flex justify-center items-center text-2xl'></i> ORDERS
                 </main>
-                <h1 className='text-5xl'>20</h1>
+                <h1 className='text-5xl'>{ordersCount}</h1>
               </div>
             </section>
           )}

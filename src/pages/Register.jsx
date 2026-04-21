@@ -1,67 +1,70 @@
 import { Fragment, useState } from 'react';
-import { auth } from '../utils/firebase.js';
+import { auth, db } from '../utils/firebase.js';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { Link, useNavigate } from 'react-router-dom';
-import { db } from '../utils/firebase.js';
 import { doc, setDoc } from 'firebase/firestore';
-
 
 export default function Register() {
 
-  const [errors, setErrors] = useState({});
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [firstname, setFirstname] = useState();
-  const [lastname, setLastname] = useState();
-  const [phonenumber, setPhonenumber] = useState();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastname] = useState('');
+  const [phonenumber, setPhonenumber] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
+  const [errorModal, setErrorModal] = useState(null);
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
-  
-  const handleBackButton = () => {
-    navigate('/')
+
+  const passwordRules = {
+    length: password.length >= 6,
+    letter: /[a-zA-Z]/.test(password),
+    number: /[0-9]/.test(password)
   }
 
+  const isFormValid =
+    email &&
+    firstname &&
+    lastname &&
+    phonenumber.length === 10 &&
+    passwordRules.length &&
+    passwordRules.letter &&
+    passwordRules.number;
+
   const handleButtonRegister = async () => {
-    const newErrors = {};
-    if(!email) newErrors.email = true;
-    if(!firstname) newErrors.username = true;
-    if(!password) newErrors.password = true;
 
-    if (!passwordRules.length || !passwordRules.letter || !passwordRules.number) {
-      newErrors.passwordRules = true;
-    }
-
-    setErrors(newErrors);
-
-    if (Object.keys(newErrors).length > 0) {
+    if (!isFormValid) {
+      setErrorModal('Completa todos los campos correctamente');
       return;
     }
 
     try {
+      setLoading(true);
+
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
       await setDoc(doc(db, 'users', user.uid), {
-        email: email,
-        firstname: firstname,
-        lastname: lastname,
-        phonenumber: phonenumber,
+        email,
+        firstname,
+        lastname,
+        phonenumber,
         createdAt: new Date()
-      })
+      });
 
-      alert('User Register Correct')
+      navigate('/');
 
-      navigate('/')
-    } catch(err) {
-      alert(err)
+    } catch (error) {
+      setErrorModal(error.message);
+    } finally {
+      setLoading(false);
     }
   }
 
-  const passwordRules = {
-    length: password && password.length >= 6,
-    letter: password && /[a-zA-z]/.test(password),
-    number: password && /[0-9]/.test(password)
+  const handleBackButton = () => {
+    return navigate('/')
   }
 
   return (
@@ -70,20 +73,104 @@ export default function Register() {
         <button onClick={handleBackButton} className='flex pl-4 items-center gap-2 absolute top-10 left-10 w-32 hover:bg-zinc-100 hover:cursor-pointer transition-all rounded-lg py-2'>
           <i className='fi fi-rr-arrow-left flex justify-center items-center'></i> Back
         </button>
-        <div className='w-2/4 flex flex-col justify-center items-center gap-5 text-fu max-lg:w-full'>
-          <h1 className='text-fu text-4xl font-bold text-center'>USER REGISTER</h1>
-          <input type='text' placeholder='gmail' name='email' className='outline-none bg-zinc-100 w-96 py-2 px-5 rounded-xl' onChange={(e) => setEmail(e.target.value)} />
-          <input type='text' placeholder='first name' name='firstname' className='outline-none bg-zinc-100 w-96 py-2 px-5 rounded-xl' onChange={(e) => setFirstname(e.target.value)} />
-          <input type='text' placeholder='last name' name='lastname' className='outline-none bg-zinc-100 w-96 py-2 px-5 rounded-xl' onChange={(e) => setLastname(e.target.value)} />
-          <input type='tel' placeholder='3001234567' pattern='[0-9]{10}' maxLength='10' required className='outline-none bg-zinc-100 w-96 py-2 px-5 rounded-xl' onChange={(e) => setPhonenumber(e.target.value)} />
-          <input type={showPassword ? 'text' : 'password'} placeholder='password' name='passwoord' className='outline-none bg-zinc-100 w-96 py-2 px-5 rounded-xl' onChange={(e) => setPassword(e.target.value)} />
-          <label className='w-96 flex gap-2'><input type='checkbox' onChange={() => setShowPassword(!showPassword)} />Show password</label>
-          <button className='bg-purple-600 py-2 text-fu text-white w-96 rounded-xl hover:cursor-pointer hover:scale-95 transition-all' onClick={handleButtonRegister}>submit</button>
-          <span>Do you have an account? <Link to={'/login'} className='text-blue-600'>Sign In</Link></span>
+        {errorModal && (
+          <div className='fixed inset-0 bg-black/60 flex justify-center items-center z-50'>
+            <div className='bg-white p-6 rounded-xl w-80 text-center shadow-xl'>
+              <h2 className='text-xl font-bold mb-3 text-red-600'>Error</h2>
+              <p className='text-gray-700'>{errorModal}</p>
+              <button 
+                onClick={() => setErrorModal(null)} 
+                className='mt-4 bg-black text-white px-4 py-2 rounded-lg hover:scale-95 transition-all'
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        )}
+
+        <div className='w-2/4 flex flex-col justify-center items-center gap-4 max-lg:w-full'>
+          <h1 className='text-4xl font-bold'>Register</h1>
+
+          <input 
+            type='email' 
+            placeholder='Email' 
+            className='bg-zinc-100 w-96 py-2 px-4 rounded-xl outline-none'
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <input 
+            type='text' 
+            placeholder='First name' 
+            className='bg-zinc-100 w-96 py-2 px-4 rounded-xl outline-none'
+            onChange={(e) => setFirstname(e.target.value)}
+          />
+
+          <input 
+            type='text' 
+            placeholder='Last name' 
+            className='bg-zinc-100 w-96 py-2 px-4 rounded-xl outline-none'
+            onChange={(e) => setLastname(e.target.value)}
+          />
+
+          <input 
+            type='tel' 
+            placeholder='3001234567' 
+            maxLength='10' 
+            className='bg-zinc-100 w-96 py-2 px-4 rounded-xl outline-none'
+            onChange={(e) => setPhonenumber(e.target.value)}
+          />
+
+          <input 
+            type={showPassword ? 'text' : 'password'} 
+            placeholder='Password' 
+            className='bg-zinc-100 w-96 py-2 px-4 rounded-xl outline-none'
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          <label className='w-96 flex gap-2 text-sm'>
+            <input 
+              type='checkbox' 
+              onChange={() => setShowPassword(!showPassword)} 
+            />
+            Show password
+          </label>
+
+          <div className='w-96 text-sm'>
+            <p className={`flex items-center gap-2 ${passwordRules.length ? 'text-green-600 line-through' : 'text-gray-500'}`}>
+              <i className='fi fi-rr-check flex justify-center items-center'></i> At least 6 characters
+            </p>
+            <p className={`flex items-center gap-2 ${passwordRules.letter ? 'text-green-600 line-through' : 'text-gray-500'}`}>
+              <i className='fi fi-rr-check flex justify-center items-center'></i> At least one letter
+            </p>
+            <p className={`flex items-center gap-2 ${passwordRules.number ? 'text-green-600 line-through' : 'text-gray-500'}`}>
+              <i className='fi fi-rr-check flex justify-center items-center'></i> At least one number
+            </p>
+          </div>
+
+          <button 
+            disabled={!isFormValid || loading}
+            onClick={handleButtonRegister}
+            className={`w-96 py-2 rounded-xl text-white transition-all ${
+              isFormValid 
+              ? 'bg-purple-600 hover:scale-95 hover:cursor-pointer' 
+              : 'bg-gray-400 cursor-not-allowed'
+            }`}
+          >
+            {loading ? 'Creating...' : 'Register'}
+          </button>
+
+          <span>
+            Already have an account?{' '}
+            <Link to='/login' className='text-blue-600'>
+              Sign In
+            </Link>
+          </span>
         </div>
+
         <div className='w-2/4 max-lg:hidden'>
-          <img src='/image-auth.jpg' alt='Image Auth' />
+          <img src='/image-auth.jpg' alt='Image Auth' className='h-full w-full object-cover' />
         </div>
+
       </section>
     </Fragment>
   );

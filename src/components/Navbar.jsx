@@ -45,10 +45,10 @@ export default function Navbar() {
         {!user && (
           <span className='flex justify-center items-center gap-5 max-md:hidden'>
             <Link to={'/register'}>
-              <button className='bg-zinc-700 text-white text-fu px-8 py-1 rounded-lg hover:scale-90 hover:cursor-pointer transition-all'>register</button>
+              <button className='bg-zinc-700 text-white text-fu px-8 py-1 rounded-lg hover:scale-90 hover:cursor-pointer transition-all'>Register</button>
             </Link>
             <Link to={'/login'}>
-              <button className='bg-purple-600 text-white text-fu px-8 py-1 rounded-lg hover:scale-90 hover:cursor-pointer transition-all'>login</button>
+              <button className='bg-purple-600 text-white text-fu px-8 py-1 rounded-lg hover:scale-90 hover:cursor-pointer transition-all'>Login</button>
             </Link>
           </span>
         )}

@@ -1,5 +1,7 @@
-import { Fragment } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Fragment, useEffect, useState } from 'react';
+import { auth } from '../utils/firebase.js';
+import { onAuthStateChanged } from 'firebase/auth';
+import { useNavigate, Link } from 'react-router-dom';
 import Navbar from '../components/Navbar.jsx';
 import ProductsMainPage from '../components/ProductsMainPage.jsx';
 import Cards from '../components/Cards.jsx';
@@ -9,6 +11,8 @@ import Review from '../components/Review.jsx';
 import Footer from '../components/Footer.jsx';
 
 export default function Home() {
+
+  const [user, setUser] = useState(null);
 
   const navigate = useNavigate();
 
@@ -20,6 +24,14 @@ export default function Home() {
     navigate('/register');
   }
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   return (
     <Fragment>
       <Navbar />
@@ -30,7 +42,13 @@ export default function Home() {
             <p className='text-base sm:text-lg text-fu'>Discover carefully selected products that will transform your day. Each item tells a story of quality and distinction.</p>
             <div className='flex flex-col sm:flex-row gap-5'>
               <button onClick={handleExplorerRute} className='bg-purple-600 px-6 py-2 rounded-lg hover:cursor-pointer hover:scale-90 transition-all text-fu'>Explorer</button>
-              <button onClick={handleRegisterRute} className='bg-zinc-800 px-6 py-2 rounded-lg hover:cursor-pointer hover:scale-90 transition-all text-fu'>Register</button>
+              {user ? (
+                <Link to={'/profile'}>
+                  <button className='bg-zinc-800 px-6 py-2 rounded-lg text-fu hover:cursor-pointer hover:scale-95 transition-all'>My account</button>
+                </Link>
+              ) : (
+                <button onClick={handleRegisterRute} className='bg-zinc-800 px-6 py-2 rounded-lg text-fu hover:cursor-pointer hover:scale-95 transition-all'>Register</button>
+              )}
             </div>
           </div>
           <div className='flex justify-center lg:justify-end w-full lg:w-auto'>

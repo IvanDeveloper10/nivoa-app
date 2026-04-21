@@ -40,7 +40,9 @@ export default function Shop() {
         productId: product.id,
         title: product.title,
         price: product.price,
-        image: product.images ? product.images[0]: '', 
+        images: product.images || [], 
+        shortDescription: product.shortDescription || '',
+        largeDescription: product.largeDescription || '',
         quantity: 1,
         createdAt: new Date()
       });
@@ -85,7 +87,10 @@ export default function Shop() {
                   <p className='text-gray-400 line-through text-sm'>${(product.price + 30000).toLocaleString('es-CO')}</p>
                   <h2 className='font-bold text-purple-600'>${product.price.toLocaleString('es-CO')}</h2>
                 </span>
-                <button onClick={() => handleAddCart(product)} className='flex justify-center gap-2 items-center bg-zinc-700 text-white px-3 py-2 rounded-lg hover:cursor-pointer hover:scale-90 transition-all'><i className='fi fi-rr-cart-arrow-down flex justify-center items-center'></i></button>
+                <button onClick={(e) => {
+                  e.stopPropagation();
+                  handleAddCart(product);
+                }} className='flex justify-center gap-2 items-center bg-zinc-700 text-white px-3 py-2 rounded-lg hover:cursor-pointer hover:scale-90 transition-all'><i className='fi fi-rr-cart-arrow-down flex justify-center items-center'></i></button>
               </div>
             </div>
           ))}
@@ -130,7 +135,7 @@ export default function Shop() {
                   <button onClick={() => handleAddCart(selectedProduct)} className='bg-zinc-800 text-white py-3 px-4 rounded-xl hover:scale-95 transition-all hover:cursor-pointer flex justify-center items-center gap-1'>Buy Now <i className='fi fi-rr-arrow-right flex justify-center items-center'></i></button>
                 </Link>
               </span>
-              <p className='text-black'>{selectedProduct.largeDescription || 'No description large avaible'}</p>
+              <p className='text-black whitespace-pre-line'>{selectedProduct.largeDescription || 'No description large avaible'}</p>
             </div>
           </div>
         </div>
