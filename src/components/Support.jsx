@@ -12,10 +12,10 @@ export default function Support() {
             <h3 className='font-bold text-lg md:text-xl'>Support</h3>
             <h1 className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold'>We're here when you need us</h1>
             <p className='text-base md:text-lg'>Questions, doubts, or problems? Our team responds tirelessly, at any time.</p>
-            <span className='flex gap-5 flex-wrap'>
+            {/* <span className='flex gap-5 flex-wrap'>
               <button className='bg-gray-200 px-5 py-1 rounded-lg hover:scale-90 hover:cursor-pointer transition-all'>Discover</button>
               <button className='flex justify-center items-center gap-1 hover:scale-90 hover:cursor-pointer transition-all'>More<i class='fi fi-rr-angle-double-small-right flex justify-center items-center'></i></button>
-            </span>
+            </span> */}
           </div>
           <div className='flex justify-center w-full lg:w-1/2'>
             <img src='/image-support.jpg' alt='Image Support' className='w-full max-w-md lg:max-w-full aspect-square object-cover rounded-lg' />

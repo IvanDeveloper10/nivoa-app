@@ -75,7 +75,7 @@ export default function Home() {
       <Support />
       <ProductsMainPage />
       <Review />
-      <Footer />
+      {/* <Footer /> */}
     </Fragment>
   );
 }

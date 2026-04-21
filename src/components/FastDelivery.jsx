@@ -12,10 +12,10 @@ export default function FastDelivery() {
             <h3 className='font-bold text-lg md:text-xl'>Velocity</h3>
             <h1 className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold'>The shipment arrives where you need it without waiting</h1>
             <p className='text-base md:text-lg'>Your orders are delivered directly to your home. Safe and efficient.</p>
-            <span className='flex gap-5 flex-wrap'>
+            {/* <span className='flex gap-5 flex-wrap'>
               <button className='bg-gray-200 px-5 py-1 rounded-lg hover:scale-90 hover:cursor-pointer transition-all'>Discover</button>
               <button className='flex justify-center items-center gap-1 hover:scale-90 hover:cursor-pointer transition-all'>More<i class='fi fi-rr-angle-double-small-right flex justify-center items-center'></i></button>
-            </span>
+            </span> */}
           </div>
           <div className='flex justify-center w-full lg:w-1/2'>
             <img src='/image-fast-delivery.png' alt='Image Fast Delivery' className='w-full max-w-md lg:max-w-full aspect-square object-cover rounded-lg' />
