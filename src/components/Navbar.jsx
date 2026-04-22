@@ -37,7 +37,7 @@ export default function Navbar() {
           <Link to={'/'} className='flex justify-center items-center gap-1'><i className='fi fi-rr-home flex justify-center items-center'></i>Home</Link>
           <label className='flex border-2 border-zinc-700 px-2 gap-1 rounded-full max-lg:hidden'><i className='fi fi-rr-search flex justify-center items-center'></i><input type='text' className='outline-none focus:outline-none focus:ring-0' /></label>
           <Link to={'/shop'} className='flex justify-center items-center gap-1'><i className='fi fi-rr-shopping-bag flex justify-center items-center'></i>Shop</Link>
-          <Link to={'/'} className='flex justify-center items-center gap-1'><i className='fi fi-rr-headset flex justify-center items-center'></i>Contact</Link>
+          {/* <Link to={'/'} className='flex justify-center items-center gap-1'><i className='fi fi-rr-headset flex justify-center items-center'></i>Contact</Link> */}
           {userAdmin && (
             <Link to={'/dashboard'} className='flex justify-center items-center gap-1'><i class='fi fi-rr-dashboard-panel flex justify-center items-center'></i>Dashboard</Link>
           )}
