@@ -174,7 +174,7 @@ export default function UserProfile() {
                       {order.items?.map((item, index) => (
                         <div key={index} className='shrink-0'>
                           <img 
-                            src={item.image} 
+                            src={item.images?.[0]} 
                             alt='Item' 
                             className='w-20 rounded-xl' 
                           />
